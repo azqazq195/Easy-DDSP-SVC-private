@@ -8,3 +8,4 @@ configs/
 !configs/sins.yaml
 !configs/diffusion.yaml
 cache/
+pretrain/
