@@ -16,25 +16,25 @@ SETLOCAL EnableDelayedExpansion
 @REM !ESC![36mCyan!ESC![0m
 @REM !ESC![37mWhite!ESC![0m
 
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@REM 필수 프로그램 다운로드
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
 @echo 아래 프로그램 및 파일을 다운로드 합니다.
 @echo:
 
-@echo 프로그램 다운로드 목록
+@echo 설치 목록
 @echo  - Nvidia CUDA
 @echo  - Microsoft Visual Studio 2022 Build Tools
 @echo  - Python
-@echo  - FFmpeg
 @echo:
 
-@echo 파일 다운로드 목록
+@echo 다운로드 목록
+@echo  - FFmpeg
 @echo  - https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt
 @echo  - https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip
 @echo  - https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr
 @echo:
+
+@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@REM 설치
+@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @echo Nvidia CUDA 가 설치되었는지 확인합니다.
 winget list --name "CUDA">nul 2>&1
@@ -66,21 +66,20 @@ if %ERRORLEVEL% NEQ 0 (
 )
 @echo:
 
-@echo FFmpeg 이 설치되었는지 확인합니다.
-winget list --name "ffmpeg">nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    @echo FFmpeg is not installed. !ESC![32m설치중...!ESC![0m
-    winget install -e --id Gyan.FFmpeg
-) else (
-    @echo FFmpeg 이 설치되었습니다. !ESC![32m생략...!ESC![0m
+@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+@REM 다운로드
+@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
+
+@REM FFmpeg
+if exist ffmpeg (
+    rmdir /s /q ffmpeg
 )
-@echo:
-
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@REM 모델 다운로드
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-@echo Model 을 다운로드합니다.
+set "filename=ffmpeg-6.0-full_build.zip"
+curl -L -o "%filename%" https://github.com/GyanD/codexffmpeg/releases/download/6.0/%filename%
+powershell -Command "Expand-Archive -Path '%filename%' -DestinationPath '.' -Force"
+rename ffmpeg-6.0-full_build ffmpeg
+del "%filename%"
+powershell -Command "$currentPath = Get-Location; $existingPath = [Environment]::GetEnvironmentVariable('PATH', 'User'); $newPath = $existingPath + ';'+ $currentPath + '\ffmpeg\bin'; [Environment]::SetEnvironmentVariable('PATH', $newPath, 'User')"
 
 @REM 모델 1
 set "filename=hubert-soft-0d54a1f4.pt"
@@ -103,6 +102,7 @@ del %filename%
 if not exist DDSP-SVC\pretrain\ContentVec (
     mkdir DDSP-SVC\pretrain\ContentVec
 )
+echo:
 echo 오픈되는 웹사이트에서 파일을 직접 다운로드 해야합니다.
 :loop
 echo 준비되었다면 "Y" 입력 후 엔터
@@ -143,8 +143,6 @@ goto :loop2
 :end
 
 @echo:
-
-pip install pydub
 
 @echo !ESC![32mSetup Finished!!ESC![0m
 pause
