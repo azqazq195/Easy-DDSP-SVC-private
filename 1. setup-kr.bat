@@ -143,6 +143,8 @@ goto :loop2
 :end
 
 @echo:
-@echo !ESC![32mSetup Finished!!ESC![0m
 
+pip install pydub
+
+@echo !ESC![32mSetup Finished!!ESC![0m
 pause
