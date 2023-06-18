@@ -1,6 +1,3 @@
-.vscode/
-voice/
-split-voice/
-ffmpeg-6.0-full_build/
-ffmpeg/
 .venv/
+.vscode/
+ffmpeg/
