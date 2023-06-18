@@ -16,58 +16,8 @@ SETLOCAL EnableDelayedExpansion
 @REM !ESC![36mCyan!ESC![0m
 @REM !ESC![37mWhite!ESC![0m
 
-@echo Downloading the following programs and files.
-@echo:
-
-@echo Installation list
-@echo  - Nvidia CUDA
-@echo  - Microsoft Visual Studio 2022 Build Tools
-@echo  - Python
-@echo:
-
-@echo Download list
-@echo  - FFmpeg
-@echo  - https://github.com/bshall/hubert/releases/download/v0.1/hubert-soft-0d54a1f4.pt
-@echo  - https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/nsf_hifigan_20221211.zip
-@echo  - https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr
-@echo:
-
 @REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@REM Installation
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-
-@echo Checking if Nvidia CUDA is installed.
-winget list --name "CUDA">nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    @echo Nvidia CUDA is not installed. !ESC![32mInstalling...!ESC![0m
-    winget install -e --id Nvidia.CUDA -v 11.8
-) else (
-    @echo Nvidia CUDA is already installed. !ESC![32mSkipping...!ESC![0m
-)
-@echo:
-
-@echo Checking if Microsoft Visual Studio 2022 Build Tools is installed.
-winget list --name "Visual Studio Build Tools">nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    @echo Microsoft Visual Studio 2022 Build Tools is not installed. !ESC![32mInstalling...!ESC![0m
-    winget install -e --id Microsoft.VisualStudio.2022.BuildTools
-) else (
-    @echo Microsoft Visual Studio 2022 Build Tools is already installed. !ESC![32mSkipping...!ESC![0m
-)
-@echo:
-
-@echo Checking if Python is installed.
-winget list --name "python">nul 2>&1
-if %ERRORLEVEL% NEQ 0 (
-    @echo Python is not installed. !ESC![32mInstalling...!ESC![0m
-    winget install -e --id Python.Python.3.11
-) else (
-    @echo Python is already installed. !ESC![32mSkipping...!ESC![0m
-)
-@echo:
-
-@REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
-@REM Downloading
+@REM 다운로드
 @REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @REM FFmpeg
@@ -81,7 +31,7 @@ rename ffmpeg-6.0-full_build ffmpeg
 del "%filename%"
 powershell -Command "$currentPath = Get-Location; $existingPath = [Environment]::GetEnvironmentVariable('PATH', 'User'); $newPath = $existingPath + ';'+ $currentPath + '\ffmpeg\bin'; [Environment]::SetEnvironmentVariable('PATH', $newPath, 'User')"
 
-@REM Model 1
+@REM 모델 1
 set "filename=hubert-soft-0d54a1f4.pt"
 curl -L -o "%filename%" https://github.com/bshall/hubert/releases/download/v0.1/%filename%
 if not exist DDSP-SVC\pretrain\hubert (
@@ -89,7 +39,7 @@ if not exist DDSP-SVC\pretrain\hubert (
 )
 move /Y "%filename%" DDSP-SVC\pretrain\hubert
 
-@REM Model 2
+@REM 모델 2
 set "filename=nsf_hifigan_20221211.zip"
 curl -L -o "%filename%" https://github.com/openvpi/vocoders/releases/download/nsf-hifigan-v1/%filename%
 if not exist DDSP-SVC\pretrain (
@@ -98,14 +48,14 @@ if not exist DDSP-SVC\pretrain (
 powershell -Command "Expand-Archive -Path %filename% -DestinationPath .\DDSP-SVC/pretrain -Force"
 del %filename%
 
-@REM Model 3
+@REM 모델 3
 if not exist DDSP-SVC\pretrain\ContentVec (
     mkdir DDSP-SVC\pretrain\ContentVec
 )
 echo:
-echo You will need to directly download the file from the opened website.
+echo 오픈되는 웹사이트에서 파일을 직접 다운로드 해야합니다.
 :loop
-echo If you're ready, input "Y" and press enter.
+echo 준비되었다면 "Y" 입력 후 엔터
 set /p YN=
 echo:
 if /i "%YN%" == "y" (
@@ -115,9 +65,9 @@ if /i "%YN%" == "y" (
 goto :loop
 :end
 
-echo Move the downloaded file to the opened folder.
+echo 방금 다운로드한 파일을 오픈되는 폴더에 옮겨야합니다.
 :loop1
-echo When ready, input "Y" and press enter.
+echo 준비되었다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN=
 if /i "%YN%" == "Y" (
     explorer "%CD%\DDSP-SVC\pretrain\ContentVec"
@@ -127,22 +77,18 @@ if /i "%YN%" == "Y" (
 goto :loop1
 
 :loop2
-echo If you've moved the file, input "Y" and press enter.
+echo 파일을 옮겼다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN2=
 echo:
 if /i "%YN2%" == "Y" (
     if exist %CD%\DDSP-SVC\pretrain\ContentVec\checkpoint_best_legacy_500.pt (
-        echo File verified.
+        echo 파일을 확인했습니다.
         goto :end
     ) else (
-        echo Please verify that you've moved the file to the correct location.
+        echo 경로에 파일을 옮겼는지 확인해 주세요.
         goto :loop2
     )
 )
 goto :loop2
 :end
-
 @echo:
-
-@echo !ESC![32mSetup Finished!!ESC![0m
-pause
