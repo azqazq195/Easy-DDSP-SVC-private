@@ -30,7 +30,7 @@ for dir_name, subdir_list, file_list in os.walk(input_folder):
         wav_name = os.path.splitext(file_name)[0]
         wav_path = os.path.join(target_folder_path, f"{wav_name}.wav")
 
-        print(f"{wav_name}: 작업 시작")
+        print(f"{target_folder_name}: {wav_name}: 변환 시작")
         if os.path.exists(wav_path):
             print(f"이미 변환된 파일\n")
             continue

@@ -1,26 +1,43 @@
 import os
+import shutil
 from pydub import AudioSegment
+from pydub.silence import split_on_silence
 
-# 입력 폴더 경로
-input_folder = "voice/"
-
-# 출력 폴더 경로
-output_folder = "split-voice/"
-
+input_folder = "voice-source"
+output_folder = "voice-source-splited"
 # 분할 길이 설정 (15초)
 chunk_length_ms = 15 * 1000
 
-# 출력 폴더가 없으면 생성
-if not os.path.exists(output_folder):
-    os.makedirs(output_folder)
+for dir_name, subdir_list, file_list in os.walk(input_folder):
+    if dir_name == input_folder:
+        continue
 
-# 입력 폴더의 모든 MP3 파일에 대해 분할 작업 수행
-for filename in os.listdir(input_folder):
-    if filename.endswith(".mp3"):
-        # 보컬 파일 로드 (MP3 형식)
-        vocal_file = AudioSegment.from_mp3(os.path.join(input_folder, filename))
+    target_folder_name = os.path.basename(dir_name)
+    target_folder_path = os.path.join(output_folder, target_folder_name)
 
-        # 보컬 파일 분할
+    print("======================")
+    print(f"{target_folder_name}: 폴더 확인")
+    print("======================")
+    if not os.path.exists(target_folder_path):
+        os.makedirs(target_folder_path)
+        print("폴더 생성 완료\n")
+    else:
+        print("이미 존재하는 폴더\n")
+
+    for file_name in file_list:
+        if file_name == ".gitignore":
+            continue
+
+        file_path = os.path.join(dir_name, file_name)
+        wav_name = os.path.splitext(file_name)[0]
+        wav_path = os.path.join(target_folder_path, f"{wav_name}_1.wav")
+        vocal_file = AudioSegment.from_wav(file_path)
+
+        print(f"{target_folder_name}: {wav_name}: 작업 시작")
+        if os.path.exists(wav_path):
+            print(f"이미 작업된 파일\n")
+            continue
+
         chunks = []
         start_time = 0
         end_time = chunk_length_ms
@@ -38,5 +55,7 @@ for filename in os.listdir(input_folder):
 
         # 분할된 파일 저장
         for i, chunk in enumerate(chunks):
-            output_file = os.path.join(output_folder, f"cut_{filename}_{i + 1}.mp3")
-            chunk.export(output_file, format="mp3")
+            output_file = os.path.join(target_folder_path, f"{wav_name}_{i + 1}.wav")
+            chunk.export(output_file, format="wav")
+
+        print("작업 완료\n")
