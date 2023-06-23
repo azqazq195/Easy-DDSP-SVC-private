@@ -43,7 +43,7 @@ if defined folders[%choice%] (
     call .venv\Scripts\activate.bat
     cd ..
 
-    call python script\move-audio.py !folder!/!selected_folder!
+    call python script\move-audio-prepare.py !folder!/!selected_folder!
 
     cd DDSP-SVC
     call python draw.py
