@@ -72,7 +72,7 @@ echo 방금 다운로드한 파일을 오픈되는 폴더에 옮겨야합니다.
 echo 준비되었다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN=
 if /i "%YN%" == "Y" (
-    explorer "%CD%\DDSP-SVC\pretrain\ContentVec"
+    explorer "%CD%\DDSP-SVC\pretrain\hubert"
     echo:
     goto :loop2
 )
@@ -83,7 +83,7 @@ echo 파일을 옮겼다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN2=
 echo:
 if /i "%YN2%" == "Y" (
-    if exist %CD%\DDSP-SVC\pretrain\ContentVec\checkpoint_best_legacy_500.pt (
+    if exist %CD%\DDSP-SVC\pretrain\hubert\checkpoint_best_legacy_500.pt (
         echo 파일을 확인했습니다.
         goto :end
     ) else (
