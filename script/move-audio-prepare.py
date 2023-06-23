@@ -5,9 +5,6 @@ import sys
 input_folder = sys.argv[1]
 output_folder = "DDSP-SVC/data/train/audio"
 
-def ignore_gitignore(dir, files):
-    return [f for f in files if f != ".gitignore"]
-
 # 기존 파일 삭제
 for root, dirs, files in os.walk(output_folder):
     for file in files:
