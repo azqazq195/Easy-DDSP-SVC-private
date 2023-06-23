@@ -14,16 +14,18 @@ SETLOCAL EnableDelayedExpansion
 @echo ================================================
 @echo:
 
+cd DDSP-SVC
 call python -m venv .venv
 call .venv\Scripts\activate.bat
-call python convert-audio.py
+cd ..
+call python script\convert-audio.py
 
 @echo ================================================
 @echo 파일을 15초 간격으로 분할합니다.
 @echo ================================================
 @echo:
 
-call python split-audio.py
+call python script\split-audio.py
 
 @echo !ESC![32m변환 완료!!ESC![0m
 pause

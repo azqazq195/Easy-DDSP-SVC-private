@@ -21,6 +21,7 @@ SETLOCAL EnableDelayedExpansion
 @REM @@@@@@@@@@@@@@@@@@@@@@@@@@@@
 
 @REM FFmpeg
+cd DDSP-SVC
 if exist ffmpeg (
     rmdir /s /q ffmpeg
 )
@@ -30,6 +31,7 @@ powershell -Command "Expand-Archive -Path '%filename%' -DestinationPath '.' -For
 rename ffmpeg-6.0-full_build ffmpeg
 del "%filename%"
 powershell -Command "$currentPath = Get-Location; $existingPath = [Environment]::GetEnvironmentVariable('PATH', 'User'); $newPath = $existingPath + ';'+ $currentPath + '\ffmpeg\bin'; [Environment]::SetEnvironmentVariable('PATH', $newPath, 'User')"
+cd ..
 
 @REM 모델 1
 set "filename=hubert-soft-0d54a1f4.pt"

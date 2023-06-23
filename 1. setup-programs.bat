@@ -20,7 +20,7 @@ SETLOCAL EnableDelayedExpansion
 @echo:
 
 @echo 1. 프로그램 설치 (약 7 GB)
-@echo  - Nvidia CUDA
+@echo  - Nvidia CUDA 18
 @echo  - Microsoft Visual Studio 2022 Build Tools
 @echo  - Python
 @echo:
@@ -32,12 +32,12 @@ SETLOCAL EnableDelayedExpansion
 @echo  - https://ibm.ent.box.com/s/z1wgl1stco8ffooyatzdwsqn2psd9lrr
 @echo:
 
-@echo 3. 파이썬 환경 구성 (약 3 GB)
+@echo 3. Python 환경 구성 (약 5 GB)
 @echo:
 
-call install.bat
-call download.bat
-call python-settings.bat
+call script/install.bat
+call script/download.bat
+call script/python-settings.bat
 
 @echo !ESC![32m설치 완료!!ESC![0m
 pause

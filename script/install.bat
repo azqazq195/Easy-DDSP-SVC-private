@@ -35,7 +35,7 @@ if %ERRORLEVEL% NEQ 0 (
 winget list --name "python">nul 2>&1
 if %ERRORLEVEL% NEQ 0 (
     @echo Python 이 설치되지 않았습니다. !ESC![32m설치중...!ESC![0m
-    winget install -e --id Python.Python.3.11
+    winget install -e --id Python.Python.3.9
 ) else (
     @echo Python 이 설치되었습니다. !ESC![32m생략...!ESC![0m
 )

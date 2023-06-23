@@ -3,8 +3,9 @@ import shutil
 from pydub import AudioSegment
 from pydub.silence import split_on_silence
 
-input_folder = "voice"
-output_folder = "voice-source"
+script_folder = os.path.dirname(os.path.abspath(__file__))
+input_folder = os.path.join(os.path.dirname(script_folder), "voice")
+output_folder = os.path.join(os.path.dirname(script_folder), "voice-source")
 
 for dir_name, subdir_list, file_list in os.walk(input_folder):
     if dir_name == input_folder:
