@@ -19,7 +19,7 @@ call .venv\Scripts\activate.bat
 call python convert-audio.py
 
 @echo ================================================
-@echo 파일을 15초 간격으로 분활합니다.
+@echo 파일을 15초 간격으로 분할합니다.
 @echo ================================================
 @echo:
 
