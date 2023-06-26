@@ -18,7 +18,7 @@ cd DDSP-SVC
 call python -m venv .venv
 call .venv\Scripts\activate.bat
 cd ..
-call python script\convert-audio.py
+call python script\setup-audio.py
 
 @echo ================================================
 @echo 파일을 15초 간격으로 분할합니다.
