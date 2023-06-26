@@ -51,8 +51,8 @@ powershell -Command "Expand-Archive -Path %filename% -DestinationPath .\DDSP-SVC
 del %filename%
 
 @REM 모델 3
-if not exist DDSP-SVC\pretrain\ContentVec (
-    mkdir DDSP-SVC\pretrain\ContentVec
+if not exist DDSP-SVC\pretrain\contentvec (
+    mkdir DDSP-SVC\pretrain\contentvec
 )
 echo:
 echo 오픈되는 웹사이트에서 파일을 직접 다운로드 해야합니다.
@@ -72,7 +72,7 @@ echo 방금 다운로드한 파일을 오픈되는 폴더에 옮겨야합니다.
 echo 준비되었다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN=
 if /i "%YN%" == "Y" (
-    explorer "%CD%\DDSP-SVC\pretrain\hubert"
+    explorer "%CD%\DDSP-SVC\pretrain\contentvec"
     echo:
     goto :loop2
 )
@@ -83,7 +83,7 @@ echo 파일을 옮겼다면 "Y"를 입력한 후 엔터를 눌러주세요.
 set /p YN2=
 echo:
 if /i "%YN2%" == "Y" (
-    if exist %CD%\DDSP-SVC\pretrain\hubert\checkpoint_best_legacy_500.pt (
+    if exist %CD%\DDSP-SVC\pretrain\contentvec\checkpoint_best_legacy_500.pt (
         echo 파일을 확인했습니다.
         goto :end
     ) else (
